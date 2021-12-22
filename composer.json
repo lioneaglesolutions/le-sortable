@@ -1,0 +1,56 @@
+{
+    "name": "lioneagle/le-sortable",
+    "description": "This is my package le-sortable",
+    "keywords": [
+        "LionEagle",
+        "laravel",
+        "le-sortable"
+    ],
+    "homepage": "https://github.com/lioneagle/le-sortable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James",
+            "email": "james@lioneagle.solutions",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/contracts": "^8.73"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.10",
+        "nunomaduro/larastan": "^1.0",
+        "orchestra/testbench": "^6.22",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lioneagle\\LeSortable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lioneagle\\LeSortable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lioneagle\\LeSortable\\LeSortableServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
