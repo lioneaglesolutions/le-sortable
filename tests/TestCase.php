@@ -2,7 +2,6 @@
 
 namespace Lioneagle\LeSortable\Tests;
 
-use App\Models\Task;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Model;

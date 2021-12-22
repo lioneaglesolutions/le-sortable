@@ -17,7 +17,7 @@ trait Sortable
             $model->setOrderLast();
         });
         self::updating(function (SortableInterface $model) {
-            if ($model->isDirty($model->dateColumn)) {
+            if ($model->isDirty($model->getDateColumn())) {
                 $model->setOrderLast();
             }
         });
@@ -119,10 +119,13 @@ trait Sortable
 
         $currentOrder = $this->getOrder();
 
+        dump('init order: ' . $this->order);
+
         $this->update([$this->getDateColumn() => $model->{$this->getDateColumn()}]);
 
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
+            // ->where($this->getKeyName(), '!=', $this->getKey())
             ->increment($this->getSortableColumn());
 
         $this->newSortQuery()
@@ -130,7 +133,20 @@ trait Sortable
             ->where($this->getSortableColumn(), '<=', $newOrder)
             ->decrement($this->getSortableColumn());
 
+        dump('order in memory: ' . $this->order);
+
+        dump(
+            $this->newSortQuery()->where($this->getSortableColumn(), '>=', $newOrder)->where('id', $this->id)->pluck(
+                'order'
+            )->first()
+        );
         $this->setOrder($newOrder)->save();
+        dump('order after saving: ' . $this->order);
+        dump(
+            $this->newSortQuery()->where($this->getSortableColumn(), '>=', $newOrder)->where('id', $this->id)->pluck(
+                'order'
+            )->first()
+        );
     }
 
     protected function getSortableColumn(): string
@@ -145,7 +161,7 @@ trait Sortable
 
     protected function setOrder(int $order): static
     {
-        $this->{$this->getSortableColumn()} = $order;
+        $this->fill([$this->getSortableColumn() => $order]);
 
         return $this;
     }

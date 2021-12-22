@@ -95,25 +95,49 @@ class SortableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_insert_model_after_another_in_another_group_when_priority_it_lower()
+    {
+        $first = SortableModel::find(1);
+        $second = SortableModel::find(2);
+        $third = SortableModel::find(3);
+        $fourth = SortableModel::find(7);
+
+        $this->assertEquals(1, $first->getFreshOrder());
+        $this->assertEquals(2, $fourth->getFreshOrder());
+
+        $this->assertFalse($fourth->onSameDayAs($second));
+
+        $fourth->moveAfter($first);
+
+        $this->assertTrue($fourth->onSameDayAs($second));
+
+        $this->assertEquals(1, $first->getFreshOrder());
+        $this->assertEquals(3, $second->getFreshOrder());
+        $this->assertEquals(4, $third->getFreshOrder());
+        $this->assertEquals(2, $fourth->getFreshOrder());
+    }
+
+    /** @test */
     public function it_can_insert_model_before_another_in_another_group()
     {
         $first = SortableModel::find(1);
         $second = SortableModel::find(2);
-        $third = SortableModel::find(6);
+        $third = SortableModel::find(3);
+        $fourth = SortableModel::find(6);
 
         $this->assertEquals(1, $first->getFreshOrder());
-        $this->assertEquals(2, $second->getFreshOrder());
-        $this->assertEquals(1, $third->getFreshOrder());
+        $this->assertEquals(1, $fourth->getFreshOrder());
 
-        $this->assertFalse($third->onSameDayAs($second));
+        $this->assertFalse($fourth->onSameDayAs($second));
 
-        $third->moveBefore($first);
+        $fourth->moveBefore($first);
 
-        $this->assertTrue($third->onSameDayAs($second));
+        $this->assertTrue($fourth->onSameDayAs($second));
 
         $this->assertEquals(2, $first->getFreshOrder());
         $this->assertEquals(3, $second->getFreshOrder());
-        $this->assertEquals(1, $third->getFreshOrder());
+        $this->assertEquals(4, $third->getFreshOrder());
+        $this->assertEquals(1, $fourth->getFreshOrder());
     }
 
     /** @test */
