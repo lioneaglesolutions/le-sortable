@@ -112,26 +112,26 @@ class SortableTest extends TestCase
     public function it_changes_the_date_when_inserted_after()
     {
         $first = SortableModel::find(1);
-        $this->assertTrue(Carbon::today()->isSameDay($first->date));
+        $this->assertTrue(Carbon::today()->isSameDay($first->start_date));
 
         $second = SortableModel::find(6);
-        $this->assertTrue(Carbon::tomorrow()->isSameDay($second->date));
+        $this->assertTrue(Carbon::tomorrow()->isSameDay($second->start_date));
 
         $first->moveAfter($second);
-        $this->assertTrue($first->refresh()->date->isSameDay(Carbon::tomorrow()));
+        $this->assertTrue($first->refresh()->start_date->isSameDay(Carbon::tomorrow()));
     }
 
     /** @test */
     public function it_changes_the_date_when_inserted_before()
     {
         $first = SortableModel::find(1);
-        $this->assertTrue(Carbon::today()->isSameDay($first->date));
+        $this->assertTrue(Carbon::today()->isSameDay($first->start_date));
 
         $second = SortableModel::find(6);
-        $this->assertTrue(Carbon::tomorrow()->isSameDay($second->date));
+        $this->assertTrue(Carbon::tomorrow()->isSameDay($second->start_date));
 
         $second->moveAfter($first);
-        $this->assertTrue($first->refresh()->date->isSameDay(Carbon::today()));
+        $this->assertTrue($first->refresh()->start_date->isSameDay(Carbon::today()));
     }
 
     /** @test */
@@ -139,10 +139,10 @@ class SortableTest extends TestCase
     {
         $model = SortableModel::create([
             'name' => 1,
-            'date' => Carbon::now()->addDays(10),
+            'start_date' => Carbon::now()->addDays(10),
         ]);
 
-        $this->assertEquals(1, $model->priority);
+        $this->assertEquals(1, $model->order);
     }
 
     /** @test */
@@ -150,10 +150,10 @@ class SortableTest extends TestCase
     {
         $model = SortableModel::create([
             'name' => 1,
-            'date' => Carbon::now(),
+            'start_date' => Carbon::now(),
         ]);
 
-        $this->assertEquals(6, $model->priority);
+        $this->assertEquals(6, $model->order);
     }
 
     /** @test */
@@ -161,22 +161,22 @@ class SortableTest extends TestCase
     {
         $first = SortableModel::create([
             'name' => 1,
-            'date' => Carbon::now(),
+            'start_date' => Carbon::now(),
         ]);
 
         $second = SortableModel::create([
             'name' => 1,
-            'date' => Carbon::tomorrow(),
+            'start_date' => Carbon::tomorrow(),
         ]);
 
-        $this->assertEquals(6, $second->priority);
-        $this->assertEquals(6, $first->priority);
+        $this->assertEquals(6, $second->order);
+        $this->assertEquals(6, $first->order);
 
         $first->update([
-            'date' => Carbon::tomorrow(),
+            'start_date' => Carbon::tomorrow(),
         ]);
 
-        $this->assertNotEquals(6, $first->priority);
-        $this->assertEquals(7, $first->priority);
+        $this->assertNotEquals(6, $first->order);
+        $this->assertEquals(7, $first->order);
     }
 }

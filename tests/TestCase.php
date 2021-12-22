@@ -42,8 +42,8 @@ class TestCase extends Orchestra
         $application['db']->connection()->getSchemaBuilder()->create('sortable_models', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('priority');
-            $table->dateTime('date');
+            $table->integer('order');
+            $table->dateTime('start_date');
             $table->timestamps();
         });
     }
@@ -56,7 +56,7 @@ class TestCase extends Orchestra
             collect(range(1, 5))->each(function ($index) use ($date) {
                 SortableModel::create([
                     'name' => $index,
-                    'date' => $date,
+                    'start_date' => $date,
                 ]);
             });
         });

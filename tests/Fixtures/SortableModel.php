@@ -22,11 +22,11 @@ class SortableModel extends Model implements SortableInterface
     use Sortable;
 
     protected $casts = [
-        'date' => 'datetime',
+        'start_date' => 'datetime',
     ];
 
     public function newSortQuery(): Builder
     {
-        return self::query()->whereDate('date', $this->date?->format('Y-m-d'));
+        return self::query()->whereDate('start_date', $this->start_date?->format('Y-m-d'));
     }
 }

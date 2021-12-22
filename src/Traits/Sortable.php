@@ -7,7 +7,9 @@ use Lioneagle\LeSortable\Contracts\Sortable as SortableInterface;
 
 trait Sortable
 {
-    protected string $sortableColumn = 'priority';
+    protected string $sortableColumn = 'order';
+
+    protected string $dateColumn = 'start_date';
 
     public static function bootSortable(): void
     {
@@ -15,7 +17,7 @@ trait Sortable
             $model->setOrderLast();
         });
         self::updating(function (SortableInterface $model) {
-            if ($model->isDirty('date')) {
+            if ($model->isDirty($model->dateColumn)) {
                 $model->setOrderLast();
             }
         });
@@ -79,7 +81,7 @@ trait Sortable
 
     public function onSameDayAs(SortableInterface $model): bool
     {
-        return $this->date->isSameDay($model->date);
+        return $this->{$this->dateColumn}->isSameDay($model->{$this->dateColumn});
     }
 
     public function getOrder($fresh = false): int
@@ -102,7 +104,7 @@ trait Sortable
 
         $currentOrder = $this->getOrder();
 
-        $this->update(['date' => $model->date]);
+        $this->update([$this->dateColumn => $model->{$this->dateColumn}]);
 
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
@@ -117,7 +119,7 @@ trait Sortable
 
         $currentOrder = $this->getOrder();
 
-        $this->update(['date' => $model->date]);
+        $this->update([$this->dateColumn => $model->{$this->dateColumn}]);
 
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
