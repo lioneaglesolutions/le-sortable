@@ -7,8 +7,6 @@ use Lioneagle\LeSortable\Contracts\Sortable as SortableInterface;
 
 trait Sortable
 {
-    public $foo;
-
     protected string $sortableColumn = 'priority';
 
     public static function bootSortable(): void
@@ -109,11 +107,6 @@ trait Sortable
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
             ->increment($this->getSortableColumn());
-
-        $this->newSortQuery()
-            ->where($this->getSortableColumn(), '>', $currentOrder)
-            ->where($this->getSortableColumn(), '<=', $newOrder)
-            ->decrement($this->getSortableColumn());
 
         $this->setOrder($newOrder)->save();
     }
