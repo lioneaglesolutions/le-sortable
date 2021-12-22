@@ -81,7 +81,7 @@ trait Sortable
 
     public function onSameDayAs(SortableInterface $model): bool
     {
-        return $this->{$this->dateColumn}->isSameDay($model->{$this->dateColumn});
+        return $this->{$this->getDateColumn()}->isSameDay($model->{$this->getDateColumn()});
     }
 
     public function getOrder($fresh = false): int
@@ -104,7 +104,7 @@ trait Sortable
 
         $currentOrder = $this->getOrder();
 
-        $this->update([$this->dateColumn => $model->{$this->dateColumn}]);
+        $this->update([$this->getDateColumn() => $model->{$this->getDateColumn()}]);
 
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
@@ -119,7 +119,7 @@ trait Sortable
 
         $currentOrder = $this->getOrder();
 
-        $this->update([$this->dateColumn => $model->{$this->dateColumn}]);
+        $this->update([$this->getDateColumn() => $model->{$this->getDateColumn()}]);
 
         $this->newSortQuery()
             ->where($this->getSortableColumn(), '>=', $newOrder)
@@ -136,6 +136,11 @@ trait Sortable
     protected function getSortableColumn(): string
     {
         return $this->sortableColumn;
+    }
+
+    protected function getDateColumn(): string
+    {
+        return $this->dateColumn;
     }
 
     protected function setOrder(int $order): static
