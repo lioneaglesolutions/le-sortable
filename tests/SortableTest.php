@@ -99,13 +99,21 @@ class SortableTest extends TestCase
     {
         $first = SortableModel::find(1);
         $second = SortableModel::find(2);
-        $third = SortableModel::find(7);
-
-        $third->moveBefore($second);
+        $third = SortableModel::find(6);
 
         $this->assertEquals(1, $first->getFreshOrder());
+        $this->assertEquals(2, $second->getFreshOrder());
+        $this->assertEquals(1, $third->getFreshOrder());
+
+        $this->assertFalse($third->onSameDayAs($second));
+
+        $third->moveBefore($first);
+
+        $this->assertTrue($third->onSameDayAs($second));
+
+        $this->assertEquals(2, $first->getFreshOrder());
         $this->assertEquals(3, $second->getFreshOrder());
-        $this->assertEquals(2, $third->getFreshOrder());
+        $this->assertEquals(1, $third->getFreshOrder());
     }
 
     /** @test */
