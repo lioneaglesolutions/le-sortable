@@ -57,7 +57,7 @@ trait Sortable
                 ->where($this->getSortableColumn(), '>=', $newOrder)
                 ->increment($this->getSortableColumn());
 
-            $this->fresh();
+            $this->refresh();
 
             $this->setOrder($newOrder)->save();
         }
@@ -77,7 +77,7 @@ trait Sortable
                 ->where($this->getSortableColumn(), '<=', $newOrder)
                 ->decrement($this->getSortableColumn());
 
-            $this->fresh();
+            $this->refresh();
 
             $this->setOrder($newOrder)->save();
         }
